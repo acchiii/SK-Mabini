@@ -1,0 +1,105 @@
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('../fonts/Nunito-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('../fonts/Nunito-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Hide scrollbar but keep vertical scroll */
+html, body {
+  overflow-y: scroll; /* still scrollable */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer/Edge */
+  scroll-behavior: smooth;
+  font-family: 'Poppins', "Nunito", sans-serif;
+ 
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.hide-scroll {
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.hide-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+
+
+.bitem {
+    transition: transform 600ms cubic-bezier();
+}
+.bitem:hover {
+    transform: scale(1.1);
+}
+
+
+
+  /* Sign Modal transitions */
+  #signupModal {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  #signupModal.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #signupBox {
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  #signupModal.active #signupBox {
+    transform: scale(1);
+  }
+
+
+  .headericon {
+    width: 50px;
+    height: 50px;
+  }
+
+ @keyframes spin-smooth {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-smooth {
+    animation: spin-smooth 0.8s linear infinite;
+  }
+
+
