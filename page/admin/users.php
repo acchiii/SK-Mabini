@@ -35,8 +35,8 @@ $query = $conn->query("SELECT * FROM users where role='Youth' ORDER BY name ASC"
         <a href="./index.php" class="block p-2 rounded hover:bg-primaryHover transition">🏠 Dashboard</a>
         <a href="./announcements.php" class="block p-2 rounded hover:bg-primaryHover transition">📢 Announcements</a>
         <a href="./events.php" class="block p-2 rounded hover:bg-primaryHover transition">📆 Events</a>
-        <a href="./projects.php" class="block p-2 rounded  hover:bg-primaryHover transition">📁 Projects</a>
-        <a href="./finances.php" class="block p-2 rounded  hover:bg-primaryHover transition">💰 Finances</a>
+        <!-- <a href="./projects.php" class="block p-2 rounded  hover:bg-primaryHover transition">📁 Projects</a>
+        <a href="./finances.php" class="block p-2 rounded  hover:bg-primaryHover transition">💰 Finances</a> -->
         <a href="./users.php" class="block p-2 rounded bg-primaryHover hover:bg-primaryHover transition">👥 Youth</a>
         <a href="./reports.php" class="block p-2 rounded hover:bg-primaryHover transition">💬 Feedbacks</a>
         <a href="../logout.php" class="block p-2 rounded hover:bg-primaryHover transition">🔒 Logout</a>
@@ -76,8 +76,8 @@ $query = $conn->query("SELECT * FROM users where role='Youth' ORDER BY name ASC"
                 <a href="./index.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">🏠 Dashboard</a>
                 <a href="./announcements.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📢 Announcements</a>
                 <a href="./events.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📆 Events</a>
-                <a href="./projects.php" class="block p-2 rounded  hover:bg-primaryHover transition text-left">📁 Projects</a>
-                <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">💰 Finances</a>
+                <!-- <a href="./projects.php" class="block p-2 rounded  hover:bg-primaryHover transition text-left">📁 Projects</a>
+                <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">💰 Finances</a> -->
                 <a href="./users.php" class="block p-2 rounded bg-primaryHover hover:bg-primaryHover transition text-left">👥 Youth</a>
                 <a href="./reports.php" class="block p-2 rounded hover:bg-primaryHover transition ttext-left">💬 Feedbacks</a>
                 <a href="../logout.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">🔒 Logout</a>
@@ -139,7 +139,7 @@ menuLinks.forEach(link => {
 
 <?php
 echo '
-<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 px-4 py-8">
+<div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 px-4 xl:px-5 py-8">
 ';
 
   while($row = $query->fetch_assoc()){
@@ -149,14 +149,14 @@ echo '
     $age = $dob->diff(new DateTime())->y;
 
 echo '
-<div class="bg-card border border-border rounded-lg p-4 mb-4 mx-auto max-w-xs text-center" style="max-width: 250px;">
+<div class="bg-card border border-border rounded-lg xl:p-2 p-4 mb-4 mx-auto max-w-xs text-center" style="max-width: 220px; min-width: 220px;">
     <img src="'.($row['profile'] == '' ? '../../images/icon.png' : '../../connection/'.$row['profile']).'" 
          alt="Profile" 
          style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; margin: 0 auto 1rem; display: block;">
-    <h4 class="text-md font-semibold mb-2">'.htmlspecialchars($row['name']).'</h4>
+    <h4 class="text-sm font-semibold mb-2">'.htmlspecialchars($row['name']).'</h4>
     <p class="text-sm text-textMuted mb-1">'.htmlspecialchars($age).($age > 1 ? ' years old' : ' year old').'</p>
-    <p class="text-sm text-textMuted mb-1">Location: '.htmlspecialchars($row['location']).'</p>
-    <p class="text-sm text-textMuted">Joined on: '.htmlspecialchars(date('F j, Y', strtotime($row['created_at']))).'</p>
+    <p class="text-sm text-textMuted mb-1">From '.htmlspecialchars($row['location']).'</p>
+    <!-- <p class="text-sm text-textMuted">Joined on: '.htmlspecialchars(date('F j, Y', strtotime($row['created_at']))).'</p> -->
 </div>';
 
 

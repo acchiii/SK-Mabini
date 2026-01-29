@@ -717,16 +717,15 @@ if (!empty($_GET['msg']) && !empty($_GET['msgtype'])) {
     });
 
 
-
+</script>
 
 
 
   <!-- 🔔 Notification Container (Top Center) -->
-  <div id="toastContainer"
-    class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[9999] space-y-3 flex flex-col items-center"></div>
+  <div id="toastContainer" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[9999] space-y-3 flex flex-col items-center"></div>
 
 
-
+<script>
 
     function showToast(message, type = 'error') {
       const toastContainer = document.getElementById('toastContainer');

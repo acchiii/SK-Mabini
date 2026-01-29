@@ -34,10 +34,10 @@ $query = $conn->query("SELECT * FROM announcements");
         <a href="./index.php" class="block p-2 rounded hover:bg-primaryHover transition">🏠 Dashboard</a>
         <a href="#" class="block p-2 rounded bg-primary hover:bg-primaryHover transition">📢 Announcements</a>
         <a href="./events.php" class="block p-2 rounded hover:bg-primaryHover transition">📆 Events</a>
-        <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition">📁 Projects</a>
-        <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition">💰 Finances</a>
+        <!-- <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition">📁 Projects</a>
+        <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition">💰 Finances</a> -->
         <a href="./users.php" class="block p-2 rounded hover:bg-primaryHover transition">👥 Youth</a>
-        <a href="./reports.php" class="block p-2 rounded hover:bg-primaryHover transition">� Feedbacks</a>
+        <a href="./reports.php" class="block p-2 rounded hover:bg-primaryHover transition">💬 Feedbacks</a>
         <a href="../logout.php" class="block p-2 rounded hover:bg-primaryHover transition">🔒 Logout</a>
       </nav>
     </div>
@@ -75,10 +75,10 @@ $query = $conn->query("SELECT * FROM announcements");
                 <a href="./index.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">🏠 Dashboard</a>
                 <a href="#" class="block p-2 rounded bg-primaryHover hover:bg-primaryHover transition text-left">📢 Announcements</a>
                 <a href="./events.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📆 Events</a>
-                <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📁 Projects</a>
-                <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">💰 Finances</a>
+                <!-- <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📁 Projects</a>
+                <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">💰 Finances</a> -->
                 <a href="./reports.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">👥 Youth</a>
-                <a href="./users.php" class="block p-2 rounded hover:bg-primaryHover transition ttext-left">� Feedbacks</a>
+                <a href="./users.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">💬 Feedbacks</a>
                 <a href="../logout.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">🔒 Logout</a>
            </div>
            
@@ -135,7 +135,8 @@ menuLinks.forEach(link => {
 <?php
   if ($query->num_rows == 0) {
         echo '<p class="text-center text-textMuted mt-8">No announcements available.</p>';
-    }
+    }  else {
+          echo '<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 px-5">';
   while($row = $query->fetch_assoc()){
 
     //show announcement details here
@@ -150,10 +151,11 @@ menuLinks.forEach(link => {
         <p class="text-sm">'.htmlspecialchars($row['content']).'</p>
     </div>';
     
-
+  }
+  echo '</div>';
 }
 ?>
-
+</section>
     
 </body>
 </html>

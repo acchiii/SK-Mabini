@@ -15,6 +15,7 @@ $youths = $conn->query("SELECT id FROM users WHERE role='$role'");
 $females = $conn->query("SELECT id FROM users WHERE gender='$female' and role='$role'");
 $males = $conn->query("SELECT id FROM users WHERE role='$role' and gender='$male'");
 $events = $conn->query("SELECT id FROM events");
+$announcements = $conn->query("SELECT id FROM announcements");
 $ongoingprojects = $conn->query("SELECT id FROM projects where project_status='Ongoing'");
 $totalbudget = $conn->query("SELECT total_budget FROM budget where end_year='2026'");
 $budgetr = $totalbudget->fetch_assoc();
@@ -50,8 +51,8 @@ $youth_participation = "$youths->num_rows, $youths->num_rows, $youths->num_rows,
         <a href="#" class="block p-2 rounded bg-primary hover:bg-primaryHover transition">🏠 Dashboard</a>
         <a href="./announcements.php" class="block p-2 rounded hover:bg-primaryHover transition">📢 Announcements</a>
         <a href="./events.php" class="block p-2 rounded hover:bg-primaryHover transition">📆 Events</a>
-        <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition">📁 Projects</a>
-        <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition">💰 Finances</a>
+        <!-- <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition">📁 Projects</a>
+        <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition">💰 Finances</a> -->
         <a href="./users.php" class="block p-2 rounded hover:bg-primaryHover transition">👥 Youth</a>
         <a href="./reports.php" class="block p-2 rounded hover:bg-primaryHover transition">💬 Feedbacks</a>
         <a href="../logout.php" class="block p-2 rounded hover:bg-primaryHover transition">🔒 Logout</a>
@@ -98,10 +99,10 @@ $youth_participation = "$youths->num_rows, $youths->num_rows, $youths->num_rows,
             <a href="./announcements.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📢
               Announcements</a>
             <a href="./events.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📆 Events</a>
-            <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📁
+            <!-- <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📁
               Projects</a>
             <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">💰
-              Finances</a>
+              Finances</a> -->
             <a href="./users.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">👥 Youth</a>
             <a href="./reports.php" class="block p-2 rounded hover:bg-primaryHover transition ttext-left">💬 Feedbacks</a>
             <a href="../logout.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">🔒 Logout</a>
@@ -162,12 +163,13 @@ $youth_participation = "$youths->num_rows, $youths->num_rows, $youths->num_rows,
         <?php
         $cards = [
           ['label' => 'Youth(s)', 'value' => $youths->num_rows],
-          ['label' => 'Male', 'value' => $males->num_rows],
-          ['label' => 'Female ', 'value' => $females->num_rows],
-          ['label' => 'Zones', 'value' => '8'],
-          ['label' => 'Events', 'value' => $events->num_rows],
-          ['label' => 'Ongoing Projects', 'value' => $ongoingprojects->num_rows],
-          ['label' => 'Total Budget Used', 'value' => '₱ ' . number_format($used, 2)]
+          //['label' => 'Male', 'value' => $males->num_rows],
+          //['label' => 'Female ', 'value' => $females->num_rows],
+          //['label' => 'Zones', 'value' => '8'],
+          ['label' => 'Event(s)', 'value' => $events->num_rows],
+          ['label' => 'Announcement(s)', 'value' => $announcements->num_rows],
+         // ['label' => 'Ongoing Projects', 'value' => $ongoingprojects->num_rows],
+         // ['label' => 'Total Budget Used', 'value' => '₱ ' . number_format($used, 2)]
         ];
         foreach ($cards as $c): ?>
           <div
@@ -183,16 +185,16 @@ $youth_participation = "$youths->num_rows, $youths->num_rows, $youths->num_rows,
       <h3 class="hidden md:hidden mt-20 pt-20 p-6 pb-0 text-lg font-semibold mb-2">Reports and Analytics</h3>
 
       <section class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-card border border-border rounded-2xl p-4">
+        <!-- <div class="bg-card border border-border rounded-2xl p-4">
           <h3 class="text-lg font-semibold mb-2">Project Budget Usage</h3>
           <br>
           <div class="h-64 sm:h-72">
             <canvas id="budgetChart"></canvas>
           </div>
-        </div>
+        </div> -->
 
         <div class="bg-card border border-border rounded-2xl p-4">
-          <h3 class="text-lg font-semibold mb-2">Youth Participation</h3>
+          <h3 class="text-lg font-semibold mb-2">Youth Percentage</h3>
           <br>
           <div class="h-64 sm:h-72">
             <canvas id="youthChart"></canvas>
@@ -204,30 +206,35 @@ $youth_participation = "$youths->num_rows, $youths->num_rows, $youths->num_rows,
   </div>
 
   <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../../library/chart.js"></script>
 
-  <!-- Charts -->
+  <!-- Charts Chart -->
   <script>
+    /*
     const ctx1 = document.getElementById('budgetChart');
     new Chart(ctx1, {
       type: 'doughnut',
       data: {
         labels: ['Used', 'Remaining'],
-        datasets: [{ data: [<?= $used ?>, <?= $budgetr['total_budget'] - $used ?>], backgroundColor: ['#10B981', '#2E3439'] }]
+        // datasets: [{ data: [<?= $used ?>, <?= $budgetr['total_budget'] - $used ?>], backgroundColor: ['#10B981', '#2E3439'] }]
       },
       options: { responsive: true, maintainAspectRatio: false }
-    });
+    });*/
 
     const ctx2 = document.getElementById('youthChart');
     new Chart(ctx2, {
-      type: 'bar',
+      type: 'doughnut',
       data: {
-        labels: [<?= $youth_participation_labels ?>],
-        datasets: [{ label: 'Participants', data: [<?= $youth_participation ?>], backgroundColor: '#10B981' }]
+        labels: ['Male', 'Female'],
+        // datasets: [{ data: [<?= $used ?>, <?= $budgetr['total_budget'] - $used ?>], backgroundColor: ['#10B981', '#2E3439'] }]
+        datasets: [{  data: [<?php echo $males->num_rows; ?>, <?php echo $females->num_rows; ?>], backgroundColor: ['#10B981','#2E3439'] }]
       },
       options: { responsive: true, maintainAspectRatio: false }
     });
   </script>
+
+
+
 </body>
 
 </html>

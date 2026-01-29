@@ -34,8 +34,8 @@ $query = $conn->query("SELECT * FROM events");
         <a href="./index.php" class="block p-2 rounded hover:bg-primaryHover transition">🏠 Dashboard</a>
         <a href="./announcements.php" class="block p-2 rounded hover:bg-primaryHover transition">📢 Announcements</a>
         <a href="#" class="block p-2 rounded bg-primaryHover hover:bg-primaryHover transition">📆 Events</a>
-        <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition">📁 Projects</a>
-        <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition">💰 Finances</a>
+        <!-- <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition">📁 Projects</a>
+        <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition">💰 Finances</a> -->
         <a href="./users.php" class="block p-2 rounded hover:bg-primaryHover transition">👥 Youth</a>
         <a href="./reports.php" class="block p-2 rounded hover:bg-primaryHover transition">💬 Feedbacks</a>
         <a href="../logout.php" class="block p-2 rounded hover:bg-primaryHover transition">🔒 Logout</a>
@@ -75,8 +75,8 @@ $query = $conn->query("SELECT * FROM events");
                 <a href="./index.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">🏠 Dashboard</a>
                 <a href="./announcements.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📢 Announcements</a>
                 <a href="#" class="block p-2 rounded bg-primaryHover hover:bg-primaryHover transition text-left">📆 Events</a>
-                <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📁 Projects</a>
-                <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">💰 Finances</a>
+                <!-- <a href="./projects.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📁 Projects</a>
+                <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">💰 Finances</a> -->
                 <a href="./users.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">👥 Youth</a>
                 <a href="./reports.php" class="block p-2 rounded hover:bg-primaryHover transition ttext-left">💬 Feedbacks</a>
                 <a href="../logout.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">🔒 Logout</a>
@@ -136,11 +136,12 @@ menuLinks.forEach(link => {
 <?php
  if ($query->num_rows == 0) {
         echo '<p class="text-center text-textMuted mt-8">No events available.</p>';
-    }
-  while($row = $query->fetch_assoc()){
+    } else {
+          echo '<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 px-5">';
+          while($row = $query->fetch_assoc()){
 
     //show event details here
-    echo '<div class="bg-card border border-border rounded-lg p-4 mb-4 mx-auto max-w-xs text-center" style="max-width: 250px;">
+    echo '<div class="bg-card border border-border rounded-lg p-4 mb-4 mx-auto max-w-xs text-center" style="max-width: 220px; min-width: 220px;">
       <h4 class="text-md font-semibold mb-2">'.htmlspecialchars($row['event_name']).'</h4>
       <p class="text-sm text-textMuted mb-2">'.htmlspecialchars($row['start_date']).'</p>
       <p class="text-sm">'.htmlspecialchars($row['description']).'</p>
@@ -148,8 +149,10 @@ menuLinks.forEach(link => {
   
 
 }
+  echo '</div>';
+    }
 ?>
-
+</section>
     
 </body>
 </html>

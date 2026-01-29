@@ -34,8 +34,8 @@ $query = $conn->query("SELECT * FROM feedbacks");
         <a href="./index.php" class="block p-2 rounded hover:bg-primaryHover transition">🏠 Dashboard</a>
         <a href="./announcements.php" class="block p-2 rounded hover:bg-primaryHover transition">📢 Announcements</a>
         <a href="./events.php" class="block p-2 rounded hover:bg-primaryHover transition">📆 Events</a>
-        <a href="./projects.php" class="block p-2 rounded  hover:bg-primaryHover transition">📁 Projects</a>
-        <a href="./finances.php" class="block p-2 rounded  hover:bg-primaryHover transition">💰 Finances</a>
+        <!-- <a href="./projects.php" class="block p-2 rounded  hover:bg-primaryHover transition">📁 Projects</a>
+        <a href="./finances.php" class="block p-2 rounded  hover:bg-primaryHover transition">💰 Finances</a> -->
         <a href="./users.php" class="block p-2 rounded  hover:bg-primaryHover transition">👥 Youth</a>
         <a href="./reports.php" class="block p-2 rounded bg-primaryHover hover:bg-primaryHover transition">💬 Feedbacks</a>
         <a href="../logout.php" class="block p-2 rounded  hover:bg-primaryHover transition">🔒 Logout</a>
@@ -75,8 +75,8 @@ $query = $conn->query("SELECT * FROM feedbacks");
                 <a href="./index.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">🏠 Dashboard</a>
                 <a href="./announcements.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📢 Announcements</a>
                 <a href="./events.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">📆 Events</a>
-                <a href="./projects.php" class="block p-2 rounded  hover:bg-primaryHover transition text-left">📁 Projects</a>
-                <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">💰 Finances</a>
+                <!-- <a href="./projects.php" class="block p-2 rounded  hover:bg-primaryHover transition text-left">📁 Projects</a>
+                <a href="./finances.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">💰 Finances</a> -->
                 <a href="./users.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">👥 Youth</a>
                 <a href="./reports.php" class="block p-2 rounded bg-primaryHover hover:bg-primaryHover transition ttext-left">💬 Feedbacks</a>
                 <a href="../logout.php" class="block p-2 rounded hover:bg-primaryHover transition text-left">🔒 Logout</a>
@@ -137,7 +137,7 @@ menuLinks.forEach(link => {
         echo '<p class="text-center text-textMuted mt-8">No feedbacks available.</p>';
     } 
     
-    echo '<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">';
+    echo '<div class="grid grid-cols-2 p-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">';
 
   while($row = $query->fetch_assoc()){
     //get 1 user from sender_email
@@ -149,13 +149,14 @@ menuLinks.forEach(link => {
     $profileImage = $user['profile'] == '' ? '../../images/cons2.png' : '../../connection/'.$user['profile'];
 
 echo '
-<div class="bg-card border border-border rounded-lg p-4 mb-4 mx-auto text-center w-[220px] sm:w-[240px] md:w-[260px]">
-   <img src="'.$profileImage.'" 
+<div class="bg-card border border-border rounded-lg p-4 mb-4 mx-auto sm:text-center md:text-left w-[220px] sm:w-[240px] md:w-[260px]">
+   <!-- <img src="'.$profileImage.'" 
            alt="profile" 
         class="headericon mx-auto mb-4 rounded-full border border-border object-cover sm:block w-8 h-8 sm:w-9 sm:h-9 md:w-12 md:h-12" />
-    <h4 class="text-md font-semibold mb-2">'.htmlspecialchars($user['name']).'</h4>
-    <p class="text-sm text-textMuted mb-2">'.date("F j, Y g:i A", strtotime($row['date'])).'</p>
-    <p class="text-sm">'.htmlspecialchars($row['description']).'</p>
+        -->
+    <h4 class="text-xs font-semibold mb-0">'.htmlspecialchars($user['name']).'</h4>
+    <p class="text-xs text-textMuted mb-2 mt-0">'.date("F j, Y g:i A", strtotime($row['date'])).'</p>
+    <p class="text-sm p-2 bg-red-400 rounded-md">'.htmlspecialchars($row['description']).'</p>
 </div>';
 
   }
