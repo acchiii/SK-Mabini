@@ -1,1 +1,1 @@
-{ "name": "acchiii/sk-mabini", "description": "Your project description", "require": {} }
+ { "name": "acchiii/sk-mabini", "description": "SK Mabini portal", "type": "project", "license": "proprietary", "require": { "php": ">=8.0" } }
