@@ -6,6 +6,7 @@ USE sk_mabini;
 CREATE TABLE users (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
+  number VARCHAR(13),
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
   role VARCHAR(50) NOT NULL DEFAULT 'Youth', -- values seen: 'Youth', admin likely 'Admin'
