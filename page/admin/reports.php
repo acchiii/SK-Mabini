@@ -132,6 +132,17 @@ menuLinks.forEach(link => {
 
 <section id="maincontent" class="max-h-80">
 <br>
+<div class="relative w-full max-w-md mx-auto mb-4">
+    <input type="text" id="feedbackSearch" placeholder="&nbsp; &nbsp;Search feedback..." 
+        class="w-full pl-10 pr-4 py-2 rounded-lg border border-border bg-card text-textLight focus:outline-none focus:ring-2 focus:ring-primary">
+    <!-- <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-textMuted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg> -->
+</div>
+
+<p id="noFeedback" class="text-center text-textMuted mt-4 hidden">No feedback found.</p>
+
+
+
+
 <?php
   if ($query->num_rows == 0) {
         echo '<p class="text-center text-textMuted mt-8">No feedbacks available.</p>';
@@ -149,20 +160,62 @@ menuLinks.forEach(link => {
     $profileImage = $user['profile'] == '' ? '../../images/cons2.png' : '../../connection/'.$user['profile'];
 
 echo '
-<div class="bg-card border border-border rounded-lg p-4 mb-4 mx-auto sm:text-center md:text-left w-[220px] sm:w-[240px] md:w-[260px]">
-   <!-- <img src="'.$profileImage.'" 
-           alt="profile" 
-        class="headericon mx-auto mb-4 rounded-full border border-border object-cover sm:block w-8 h-8 sm:w-9 sm:h-9 md:w-12 md:h-12" />
-        -->
-    <h4 class="text-xs font-semibold mb-0">'.htmlspecialchars($user['name']).'</h4>
-    <p class="text-xs text-textMuted mb-2 mt-0">'.date("F j, Y g:i A", strtotime($row['date'])).'</p>
-    <p class="text-sm p-2 bg-red-400 rounded-md">'.htmlspecialchars($row['description']).'</p>
+<div class="feedback-card flex items-start bg-card border border-border rounded-lg p-3 mb-4 max-w-md mx-auto"
+     data-name="'.strtolower(htmlspecialchars($user['name'])).'"
+     data-description="'.strtolower(htmlspecialchars($row['description'])).'"
+     data-date="'.strtolower(date("F j, Y g:i A", strtotime($row['date']))).'">
+
+    <!-- Profile image -->
+    <img src="'.($profileImage == "" ? "../../images/icon.png" : $profileImage).'" 
+         alt="profile" 
+         class="w-10 h-10 rounded-full object-cover mr-3 mt-1 border border-border">
+
+    <div class="flex-1 min-w-0 ml-1">
+        <!-- Name -->
+        <h4 class="text-xs font-semibold break-words">'.htmlspecialchars($user['name']).'</h4>
+        <!-- Date below name -->
+        <span class="text-xs text-textMuted mb-2 block">'.date("F j, Y g:i A", strtotime($row['date'])).'</span>
+        <!-- Message -->
+        <p class="text-sm text-textLight bg-gray-100 dark:bg-gray-700 p-2 rounded-md break-words whitespace-pre-wrap">'.htmlspecialchars($row['description']).'</p>
+    </div>
 </div>';
+
+
 
   }
     echo '</div>';
 ?>
 
-    
+ <script>
+document.getElementById('feedbackSearch').addEventListener('keyup', function () {
+    const value = this.value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.feedback-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const name = card.dataset.name || "";
+        const description = card.dataset.description || "";
+        const date = card.dataset.date || "";
+
+        if (
+            name.includes(value) ||
+            description.includes(value) ||
+            date.includes(value)
+        ) {
+            card.style.display = "flex"; // must be flex, not block
+            visibleCount++;
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    const noResult = document.getElementById('noFeedback');
+    if(noResult){
+        noResult.classList.toggle('hidden', visibleCount > 0);
+    }
+});
+</script>
+
+
 </body>
 </html>

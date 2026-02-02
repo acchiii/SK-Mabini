@@ -137,34 +137,81 @@ menuLinks.forEach(link => {
 
 <br>
 
+<!-- Add a searchbar that can filter the data of $query -->
+ <div class="relative w-full max-w-md mx-auto mb-4">
+    <input type="text" id="searchInput" placeholder="&nbsp; &nbsp;Search name or location..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-border bg-card text-textLight focus:outline-none focus:ring-2 focus:ring-primary">
+    <!-- <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-textMuted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg> -->
+   </div>
+
+<p id="noResult" class="text-center text-textMuted mt-4 hidden">No matching youth found.</p>
+
+
+
 <?php
 echo '
 <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 px-4 xl:px-5 py-8">
 ';
 
+ 
+
+ if ($query->num_rows == 0) {
+        echo '<p class="text-center text-textMuted mt-8">No youth available.</p>';
+    }
+
   while($row = $query->fetch_assoc()){
     //Grid display user information here with small icon and age calculation, dob, name, location and add max-width of each box to prevent images from being too large and wrap profile to limit the size, make the text centered
 
     $dob = new DateTime($row['dob']);
+    $location = $row['location'];
     $age = $dob->diff(new DateTime())->y;
 
 echo '
-<div class="bg-card border border-border rounded-lg xl:p-2 p-4 mb-4 mx-auto max-w-xs text-center" style="max-width: 220px; min-width: 220px;">
+<div class="youth-card bg-card border border-border rounded-lg xl:p-2 p-4 mb-4 mx-auto max-w-xs text-center"
+     style="max-width: 220px; min-width: 220px;"
+     data-name="'.strtolower(htmlspecialchars($row['name'])).'"
+     data-location="'.strtolower(htmlspecialchars($row['location'])).'"
+     data-age="'.$age.'">
+
     <img src="'.($row['profile'] == '' ? '../../images/icon.png' : '../../connection/'.$row['profile']).'" 
          alt="Profile" 
          style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; margin: 0 auto 1rem; display: block;">
+
     <h4 class="text-sm font-semibold mb-2">'.htmlspecialchars($row['name']).'</h4>
-    <p class="text-sm text-textMuted mb-1">'.htmlspecialchars($age).($age > 1 ? ' years old' : ' year old').'</p>
+    <p class="text-sm text-textMuted mb-1">'.$age.' '.($age > 1 ? 'years old' : 'year old').'</p>
     <p class="text-sm text-textMuted mb-1">From '.htmlspecialchars($row['location']).'</p>
-    <!-- <p class="text-sm text-textMuted">Joined on: '.htmlspecialchars(date('F j, Y', strtotime($row['created_at']))).'</p> -->
 </div>';
 
 
 
-}
+} 
 echo '
 </div>';
 ?>
+
+<script>
+document.getElementById('searchInput').addEventListener('keyup', function () {
+    const value = this.value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.youth-card');
+
+    cards.forEach(card => {
+        const name = card.dataset.name;
+        const location = card.dataset.location;
+        const age = card.dataset.age;
+
+        // Check if search matches any field
+        if (
+            name.includes(value) ||
+            location.includes(value) ||
+            age.includes(value)
+        ) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+});
+</script>
+
 
     
 </body>

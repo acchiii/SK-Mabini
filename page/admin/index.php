@@ -3,7 +3,7 @@ session_start();
 include '../../connection/config.php';
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] == 'Youth') {
-  header("Location: ../../index.php?msg=Invalid Action!&msgtype=warning");
+  header("Location: ../../index.php?msg=" .base64_encode("Invalid Action!") . "&msgtype=".base64_encode("warning"));
   exit;
 }
 
@@ -19,10 +19,7 @@ $announcements = $conn->query("SELECT id FROM announcements");
 $ongoingprojects = $conn->query("SELECT id FROM projects where project_status='Ongoing'");
 $totalbudget = $conn->query("SELECT total_budget FROM budget where end_year='2026'");
 $budgetr = $totalbudget->fetch_assoc();
-$used = $budgetr['total_budget'] / 2.5;
 
-$youth_participation_labels = "'Jan', 'Feb', 'Mar', 'Apr', 'May'";
-$youth_participation = "$youths->num_rows, $youths->num_rows, $youths->num_rows, $youths->num_rows, $youths->num_rows";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -162,18 +159,19 @@ $youth_participation = "$youths->num_rows, $youths->num_rows, $youths->num_rows,
       <main class="mt-10 px-6 gap-6 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xxl:grid-cols-6">
         <?php
         $cards = [
-          ['label' => 'Youth(s)', 'value' => $youths->num_rows],
+          ['label' => 'Youth', 'value' => $youths->num_rows],
           //['label' => 'Male', 'value' => $males->num_rows],
           //['label' => 'Female ', 'value' => $females->num_rows],
           //['label' => 'Zones', 'value' => '8'],
-          ['label' => 'Event(s)', 'value' => $events->num_rows],
-          ['label' => 'Announcement(s)', 'value' => $announcements->num_rows],
+          ['label' => 'Event', 'value' => $events->num_rows],
+          ['label' => 'Announcement', 'value' => $announcements->num_rows],
          // ['label' => 'Ongoing Projects', 'value' => $ongoingprojects->num_rows],
          // ['label' => 'Total Budget Used', 'value' => '₱ ' . number_format($used, 2)]
         ];
         foreach ($cards as $c): ?>
           <div
-            class="bg-card border border-border rounded-2xl p-4 shadow hover:shadow-lg transition text-left md:text-center md:p-8 lg:p-12 xl:p-16 xxl:p-20">
+            class="bg-card border border-border rounded-2xl p-4 shadow hover:shadow-lg transition text-left md:text-center md:p-8 lg:p-12 xl:p-16 xxl:p-20 hover:scale-105">
+            <img src="../../images/cards/<?= $c['label'] ?>.png" alt="<?= $c['label'] ?>" class="mb-4 mx-auto w-40 h-40 object-contain" style="filter: invert(100%); width: 80px; height: 80px;"/>
             <h3 class="text-textMuted text-sm mb-2"><?= $c['label'] ?></h3>
             <p class="text-2xl sm:text-3xl font-bold text-primary"><?= $c['value'] ?></p>
           </div>
@@ -185,13 +183,6 @@ $youth_participation = "$youths->num_rows, $youths->num_rows, $youths->num_rows,
       <h3 class="hidden md:hidden mt-20 pt-20 p-6 pb-0 text-lg font-semibold mb-2">Reports and Analytics</h3>
 
       <section class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- <div class="bg-card border border-border rounded-2xl p-4">
-          <h3 class="text-lg font-semibold mb-2">Project Budget Usage</h3>
-          <br>
-          <div class="h-64 sm:h-72">
-            <canvas id="budgetChart"></canvas>
-          </div>
-        </div> -->
 
         <div class="bg-card border border-border rounded-2xl p-4">
           <h3 class="text-lg font-semibold mb-2">Youth Percentage</h3>
@@ -210,30 +201,30 @@ $youth_participation = "$youths->num_rows, $youths->num_rows, $youths->num_rows,
 
   <!-- Charts Chart -->
   <script>
-    /*
-    const ctx1 = document.getElementById('budgetChart');
-    new Chart(ctx1, {
-      type: 'doughnut',
-      data: {
-        labels: ['Used', 'Remaining'],
-        // datasets: [{ data: [<?= $used ?>, <?= $budgetr['total_budget'] - $used ?>], backgroundColor: ['#10B981', '#2E3439'] }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });*/
 
     const ctx2 = document.getElementById('youthChart');
     new Chart(ctx2, {
       type: 'doughnut',
       data: {
         labels: ['Male', 'Female'],
-        // datasets: [{ data: [<?= $used ?>, <?= $budgetr['total_budget'] - $used ?>], backgroundColor: ['#10B981', '#2E3439'] }]
-        datasets: [{  data: [<?php echo $males->num_rows; ?>, <?php echo $females->num_rows; ?>], backgroundColor: ['#10B981','#2E3439'] }]
+          datasets: [{  data: [<?php echo $males->num_rows; ?>, <?php echo $females->num_rows; ?>], backgroundColor: ['#10B981','#fff'] }]
       },
       options: { responsive: true, maintainAspectRatio: false }
     });
   </script>
 
 
+    <!-- 🔔 Notification Container (Top Center) -->
+  <div id="toastContainer"
+    class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[9999] space-y-3 flex flex-col items-center"></div>
+  <script src="../../library/toast.js"></script>
+  <?php
+    if (isset($_GET['msg']) && isset($_GET['msgtype'])) {
+        $msg = htmlspecialchars(base64_decode($_GET['msg']));
+        $msgtype = htmlspecialchars(base64_decode($_GET['msgtype']));
+        echo "<script>showToast('$msg', '$msgtype');</script>";
+    }
+  ?>
 
 </body>
 

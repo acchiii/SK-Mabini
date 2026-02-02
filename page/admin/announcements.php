@@ -145,10 +145,10 @@ menuLinks.forEach(link => {
 
 
     echo '<div class="bg-card border border-border rounded-lg p-4 mb-4
-  mx-auto max-w-xs text-center" style="max-width: 250px;">
+  mx-auto max-w-xs text-center ml-4 gap-4" style="max-width: 250px;">
         <h4 class="text-md font-semibold mb-2">'.htmlspecialchars($row['title']).'</h4>
-        <p class="text-sm text-textMuted mb-2">'.htmlspecialchars($row['date_posted']).'</p>
-        <p class="text-sm">'.htmlspecialchars($row['content']).'</p>
+        <p class="text-sm text-textMuted mb-2">'.htmlspecialchars($row['created_at']).'</p>
+        <p class="text-sm">'.htmlspecialchars($row['description']).'</p>
     </div>';
     
   }
@@ -156,6 +156,77 @@ menuLinks.forEach(link => {
 }
 ?>
 </section>
-    
+
+<div id="floating-button" class="absolute bottom-0 right-0 mr-3 bg-transparent border border-white text-white rounded-lg px-3 py-2 shadow-lg cursor-pointer transition-transform transform hover:scale-110">
+  &nbsp;&nbsp;+ Add&nbsp;&nbsp;
+</div>
+
+
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden justify-center items-center transition-opacity duration-300 rounded-lg z-50">
+  <div class="bg-card rounded-lg p-6 max-w-md w-full">
+    <h2 class="text-lg font-semibold mb-4 text-left">Add Announcement</h2>
+    <form id="announcement-form" action="process/add_announcement.php" method="POST">
+      <div class="mb-4">
+        <label for="title" class="block text-sm font-medium">Title</label>
+        <input type="text" id="title" name="title" placeholder="Enter Announcement Title" class="border border-gray-300 rounded w-full p-2 text-textMuted bg-transparent" required>
+      </div>
+      <div class="mb-4">
+        <label for="content" class="block text-sm font-medium">Content</label>
+        <textarea id="content" name="content" placeholder="Enter Content" class="border border-gray-300 rounded w-full p-2 text-textMuted bg-transparent" required></textarea>
+      </div>
+     
+      <button type="submit" class="bg-primary text-white rounded px-4 py-2 w-full mx-24">Save</button>
+      <button type="button" id="close-modal-btn" class="bg-transparent border border-white text-white rounded px-4 py-2 mt-2 w-full mx-24" >Close</button>
+    </form>
+    <button id="close-modal" class="hidden absolute top-2 right-2 text-gray-500 hover:text-gray-700">✖</button>
+  </div>
+</div>
+
+<script>
+  const floatingButton = document.getElementById('floating-button');
+  const modal = document.getElementById('modal');
+  const closeModal = document.getElementById('close-modal');
+
+  floatingButton.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+    modal.classList.add('flex', 'opacity-0');
+    setTimeout(() => modal.classList.remove('opacity-0'), 10);
+  });
+
+  closeModal.addEventListener('click', () => {
+    modal.classList.add('opacity-0');
+    setTimeout(() => modal.classList.add('hidden'), 300);
+  });
+
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  closeModalBtn.addEventListener('click', () => {
+    modal.classList.add('opacity-0');
+    setTimeout(() => modal.classList.add('hidden'), 300);
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal.click();
+    }
+  });
+</script>
+
+
+
+  </div>
+
+
+    <!-- 🔔 Notification Container (Top Center) -->
+  <div id="toastContainer"
+    class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[9999] space-y-3 flex flex-col items-center"></div>
+  <script src="../../library/toast.js"></script>
+  <?php
+    if (isset($_GET['msg']) && isset($_GET['msgtype'])) {
+        $msg = htmlspecialchars(base64_decode($_GET['msg']));
+        $msgtype = htmlspecialchars(base64_decode($_GET['msgtype']));
+        echo "<script>showToast('$msg', '$msgtype');</script>";
+    }
+  ?>
 </body>
 </html>

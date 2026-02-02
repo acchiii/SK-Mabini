@@ -3,7 +3,7 @@ include '../../connection/config.php';
 session_start();
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'Youth') {
-  header("Location: ../../index.php?loginrequired=1&msg=Invalid Action&msgtype=warning");
+  header("Location: ../../index.php?loginrequired=1&msg=" .base64_encode("Invalid Action!") . "&msgtype=".base64_encode("warning"));
   exit;
 }
 
@@ -19,11 +19,11 @@ $feedbacksent = $conn->query("SELECT id FROM feedbacks WHERE sender_email='$emai
 $ongoingprojects = $conn->query("SELECT id FROM projects where project_status='Ongoing'");
 
 
-$events = $conn->query("SELECT start_date FROM events");
+$events = $conn->query("SELECT date FROM events");
 $currentdate = date('Y-m-d');
 $upcomingevents = 0;
 while ($row = $events->fetch_assoc()) {
-  $event_start = new DateTime($row['start_date']);
+  $event_start = new DateTime($row['date']);
 
   if ($currentdate < $event_start->format('Y-m-d')) {
     $upcomingevents++;
@@ -257,15 +257,21 @@ if ($result->num_rows > 0) {
     }
 
   </script>
+  
+
+
+
+  
+    <!-- 🔔 Notification Container (Top Center) -->
+  <div id="toastContainer"
+    class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[9999] space-y-3 flex flex-col items-center"></div>
+  <script src="../../library/toast.js"></script>
   <?php
-
-  if (!empty($msg)) { ?>
-
-    showToast('<?= $msg ?>', '<?= $msgtype ?>');
-    <?php
-    $msg = null;
-    $msgtype = null;
-  }
+    if (isset($_GET['msg']) && isset($_GET['msgtype'])) {
+        $msg = htmlspecialchars(base64_decode($_GET['msg']));
+        $msgtype = htmlspecialchars(base64_decode($_GET['msgtype']));
+        echo "<script>showToast('$msg', '$msgtype');</script>";
+    }
   ?>
 
 

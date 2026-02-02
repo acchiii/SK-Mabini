@@ -5,8 +5,8 @@ session_start();
 $msg = '';
 $msgtype = '';
 if (!empty($_GET['msg']) && !empty($_GET['msgtype'])) {
-  $msg = $_GET['msg'];
-  $msgtype = $_GET['msgtype'];
+  $msg = base64_decode($_GET['msg']);
+  $msgtype = base64_decode($_GET['msgtype']);
 }
 ?>
 
@@ -793,7 +793,7 @@ if (!empty($_GET['msg']) && !empty($_GET['msgtype'])) {
 
     <?php
     if (!empty($_GET['err'])) { ?>
-      showToast('<?= $_GET['err'] ?>', 'error');
+      showToast('<?php echo base64_decode($_GET['err']); ?>', 'error');
       /*document.getElementById('error').style = "font-family: 'Poppins', 'Nunito'; font-weight: semibold; color: red; opacity: 0.7;";
       document.getElementById('error').innerText = '< $_GET['err'] ?>';
          loginModal.classList.remove("pointer-events-none");
@@ -804,7 +804,7 @@ if (!empty($_GET['msg']) && !empty($_GET['msgtype'])) {
       }, 50);
       */
       <?php if (!empty($_GET['user'])) { ?>
-        document.getElementById('email').value = '<?= $_GET['user']; ?>';
+        document.getElementById('email').value = '<?php echo base64_decode($_GET['user']); ?>';
         loginBtn.click();
         <?php
       }
