@@ -1,0 +1,71 @@
+-- create database (adjust name/charset/collation as needed)
+CREATE DATABASE sk_mabini CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE sk_mabini;
+
+-- users table
+CREATE TABLE users (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(50) NOT NULL DEFAULT 'Youth', -- values seen: 'Youth', admin likely 'Admin'
+  gender VARCHAR(20),
+  dob DATE,
+  location VARCHAR(150),
+  profile VARCHAR(255) DEFAULT '', -- stores profile image path relative to connection/
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX(role),
+  INDEX(email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- events table
+CREATE TABLE events (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  start_date DATE,      -- code compares start_date to current date
+  end_date DATE,
+  venue VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX(start_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- announcements table
+CREATE TABLE announcements (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255),
+  description TEXT,     -- code selects *; description/content is shown in UI
+  date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- projects table
+CREATE TABLE projects (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255),
+  description TEXT,
+  project_status VARCHAR(50), -- code checks 'Ongoing'
+  start_date DATE,
+  end_date DATE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX(project_status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- budget table (finances)
+CREATE TABLE budget (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  total_budget DECIMAL(14,2) DEFAULT 0.00,
+  end_year YEAR,
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- feedbacks (reports) table
+CREATE TABLE feedbacks (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  sender_email VARCHAR(255),  -- code looks up users by this email
+  description TEXT,
+  date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX(sender_email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
