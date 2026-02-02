@@ -64,6 +64,7 @@ CREATE TABLE budget (
 -- feedbacks (reports) table
 CREATE TABLE feedbacks (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  label VARCHAR(255),
   sender_email VARCHAR(255),  -- code looks up users by this email
   description TEXT,
   date DATETIME DEFAULT CURRENT_TIMESTAMP,
